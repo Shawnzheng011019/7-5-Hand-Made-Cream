@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+int N, M;
+int bread[1001], cream[1001];
+int match[1001][1001];
+
+int max(int a, int b) {
+	if (a > b) 
+		return a;
+	else
+		return b;
+}
+
+int main() {
+	cin >> N >> M;
+	for (int i = 1; i <= N; i++) {
+		cin >> bread[i];
+	}
+	for (int j = 1; j <= M; j++) {
+		cin >> cream[j];
+	}
+	//i和j配对就是dp[i][j] = dp[i-1][j-1]+a[i]*b[j]
+	//不配对就是dp[i][j] = max(dp[i-1][j],dp[i][j-1])
+	int sum = 0;
+	for (int i = 0; i <= N; i++) {
+		for (int j = 0; j <= M; j++) {
+			match[i][j] = 0;
+		}
+	}
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= M; j++) {
+			int m = match[i - 1][j - 1] + bread[i] * cream[j];
+			int n = max(match[i - 1][j], match[i][j - 1]);
+			if (m >= n) {
+				match[i][j] = m;
+			}
+			else {
+				match[i][j] = n;
+			}
+			sum = match[i][j];
+		}
+	}
+	cout << sum << endl;
+	//选取的元素进行相乘时有一个原则，i>=j
+	return 0;
+}
